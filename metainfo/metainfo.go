@@ -80,8 +80,8 @@ func (o *OpenSergoMetaReporter) openSergoMetaReq(srvInfo *serviceinfo.ServiceInf
 	for methodName, method := range srvInfo.Methods {
 		serviceDesc.Methods = append(serviceDesc.Methods, &v1.MethodDescriptor{
 			Name:            srvInfo.GetPackageName() + "." + methodName,
-			InputTypes:      []string{fmt.Sprintf("%T", method.NewArgs())},
-			OutputTypes:     []string{fmt.Sprintf("%T", method.NewResult())},
+			InputTypes:      []string{util.ParamTypeName(method.NewArgs())},
+			OutputTypes:     []string{util.ParamTypeName(method.NewResult())},
 			ClientStreaming: &streaming,
 			ServerStreaming: &streaming,
 		})
