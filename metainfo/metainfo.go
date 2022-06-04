@@ -32,6 +32,7 @@ type OpenSergoMetaReporter struct {
 	client v1.MetadataServiceClient
 }
 
+// NewDefaultMetaReporter create a default meta info reporter
 func NewDefaultMetaReporter() (*OpenSergoMetaReporter, error) {
 	c, err := util.GetOpenSergoConfig()
 	if err != nil {
@@ -41,6 +42,7 @@ func NewDefaultMetaReporter() (*OpenSergoMetaReporter, error) {
 	return NewMetaReporter(c)
 }
 
+// NewMetaReporter create a meta info reporter
 func NewMetaReporter(c *util.OpenSergoConfig) (*OpenSergoMetaReporter, error) {
 	conn, err := grpc.Dial(c.Endpoint, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -53,6 +55,7 @@ func NewMetaReporter(c *util.OpenSergoConfig) (*OpenSergoMetaReporter, error) {
 	}, nil
 }
 
+// ReportMetaInfo report meta info to opensergo
 func (o *OpenSergoMetaReporter) ReportMetaInfo(srvInfo *serviceinfo.ServiceInfo) error {
 	metaReq, err := o.openSergoMetaReq(srvInfo)
 	if err != nil {

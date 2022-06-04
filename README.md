@@ -5,6 +5,9 @@ Report meta info to opensergo
 
 ### How to use?
 
+- run [opensergo-dashboard](https://github.com/opensergo/opensergo-dashboard)
+- report meta info need register start hook function
+
 ```go
 package main
 
