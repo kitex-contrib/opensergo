@@ -40,3 +40,6 @@ func main() {
 ### Screenshot
 
 <img src="images/meta.png" width="1674"  alt=""/>
+
+### More info
+See [example](example/server/server.go)
