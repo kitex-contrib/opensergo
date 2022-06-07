@@ -29,6 +29,7 @@ import (
 )
 
 type OpenSergoMetaReporter struct {
+	enable bool
 	client v1.MetadataServiceClient
 }
 
@@ -39,11 +40,19 @@ func NewDefaultMetaReporter() (*OpenSergoMetaReporter, error) {
 		klog.Errorf("err: %+v", err)
 		return nil, err
 	}
+	if c == nil {
+		klog.Warn(util.ConfigNotFoundErr.Error())
+		return &OpenSergoMetaReporter{}, nil
+	}
 	return NewMetaReporter(c)
 }
 
 // NewMetaReporter create a meta info reporter
 func NewMetaReporter(c *util.OpenSergoConfig) (*OpenSergoMetaReporter, error) {
+	if c == nil {
+		klog.Warn(util.ConfigNotFoundErr.Error())
+		return &OpenSergoMetaReporter{}, nil
+	}
 	conn, err := grpc.Dial(c.Endpoint, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		klog.Errorf("err: %+v", err)
@@ -52,17 +61,23 @@ func NewMetaReporter(c *util.OpenSergoConfig) (*OpenSergoMetaReporter, error) {
 	mClient := v1.NewMetadataServiceClient(conn)
 	return &OpenSergoMetaReporter{
 		client: mClient,
+		enable: true,
 	}, nil
 }
 
 // ReportMetaInfo report meta info to opensergo
 func (o *OpenSergoMetaReporter) ReportMetaInfo(srvInfo *serviceinfo.ServiceInfo) error {
+	if !o.enable {
+		klog.Warn(util.ConfigNotFoundErr.Error())
+		return util.ConfigNotFoundErr
+	}
 	metaReq, err := o.openSergoMetaReq(srvInfo)
 	if err != nil {
 		klog.Errorf("err:%+v", err)
 		return err
 	}
 	if _, err = o.client.ReportMetadata(context.TODO(), metaReq); err != nil {
+		klog.Errorf("err:%+v", err)
 		return err
 	}
 	return nil

@@ -16,9 +16,12 @@ package util
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"os"
 )
+
+var ConfigNotFoundErr = errors.New("config not found")
 
 type OpenSergoConfig struct {
 	Endpoint string `json:"endpoint"`
@@ -26,13 +29,12 @@ type OpenSergoConfig struct {
 
 func GetOpenSergoConfig() (*OpenSergoConfig, error) {
 	// refer to https://github.com/opensergo/opensergo-specification/blob/main/specification/en/README.md
-	c := OpenSergoConfig{
-		Endpoint: os.Getenv("OPENSERGO_ENDPOINT"),
-	}
+	var c OpenSergoConfig
 	if v := os.Getenv("OPENSERGO_BOOTSTRAP"); v != "" {
 		if err := json.Unmarshal([]byte(v), &c); err != nil {
 			return nil, err
 		}
+		return &c, nil
 	}
 	if v := os.Getenv("OPENSERGO_BOOTSTRAP_CONFIG"); v != "" {
 		b, err := ioutil.ReadFile(v)
@@ -42,6 +44,7 @@ func GetOpenSergoConfig() (*OpenSergoConfig, error) {
 		if err = json.Unmarshal(b, &c); err != nil {
 			return nil, err
 		}
+		return &c, nil
 	}
-	return &c, nil
+	return nil, nil
 }
