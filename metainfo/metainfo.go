@@ -28,6 +28,11 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+var protocolMap = map[serviceinfo.PayloadCodec]string{
+	serviceinfo.Thrift:   "thrift",
+	serviceinfo.Protobuf: "grpc",
+}
+
 type OpenSergoMetaReporter struct {
 	enable bool
 	client v1.MetadataServiceClient
@@ -131,8 +136,10 @@ func (o *OpenSergoMetaReporter) openSergoMetaReq(srvInfo *serviceinfo.ServiceInf
 			},
 		}
 	}
-	protocols, _ := srvInfo.Extra["protocols"].([]string)
-	serviceMetadata.Protocols = protocols
+
+	if protocol, ok := protocolMap[srvInfo.PayloadCodec]; ok {
+		serviceMetadata.Protocols = []string{protocol}
+	}
 
 	return &v1.ReportMetadataRequest{
 		AppName:         srvInfo.ServiceName,
