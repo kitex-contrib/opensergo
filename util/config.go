@@ -30,13 +30,13 @@ type OpenSergoConfig struct {
 func GetOpenSergoConfig() (*OpenSergoConfig, error) {
 	// refer to https://github.com/opensergo/opensergo-specification/blob/main/specification/en/README.md
 	var c OpenSergoConfig
-	if v := os.Getenv("OPENSERGO_BOOTSTRAP"); v != "" {
+	if v := os.Getenv("OPENSERGO_BOOTSTRAP_CONFIG"); v != "" {
 		if err := json.Unmarshal([]byte(v), &c); err != nil {
 			return nil, err
 		}
 		return &c, nil
 	}
-	if v := os.Getenv("OPENSERGO_BOOTSTRAP_CONFIG"); v != "" {
+	if v := os.Getenv("OPENSERGO_BOOTSTRAP"); v != "" {
 		b, err := ioutil.ReadFile(v)
 		if err != nil {
 			return nil, err
