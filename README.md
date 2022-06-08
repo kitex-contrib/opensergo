@@ -5,9 +5,21 @@ Report meta info to opensergo
 
 ### How to use?
 
-- run [opensergo-dashboard](https://github.com/opensergo/opensergo-dashboard)
-- report meta info need register start hook function
+#### 1. Run opensergo-dashboard
 
+refer to [opensergo-dashboard](https://github.com/opensergo/opensergo-dashboard) and run opensergo-dashboard
+
+#### 2. Set environment variables
+
+refer to [opensergo-specification](https://github.com/opensergo/opensergo-specification/tree/main/specification/en#data-plane-and-control-plane-communication-configuration) and set environment variables
+
+```shell
+export OPENSERGO_BOOTSTRAP={"endpoint":"127.0.0.1:9090"}
+```
+
+#### 3. Run example code
+
+##### example code
 ```go
 package main
 
@@ -35,6 +47,11 @@ func main() {
 	...
 }
 
+```
+
+##### command
+```shell
+go run example/server/main.go
 ```
 
 ### Screenshot

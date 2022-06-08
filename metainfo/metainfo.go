@@ -49,6 +49,7 @@ func NewDefaultMetaReporter() (*OpenSergoMetaReporter, error) {
 		klog.Warn(util.ConfigNotFoundErr.Error())
 		return &OpenSergoMetaReporter{}, nil
 	}
+	klog.Infof("get config success,config=%+v", c)
 	return NewMetaReporter(c)
 }
 
