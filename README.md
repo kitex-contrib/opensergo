@@ -14,7 +14,7 @@ refer to [opensergo-dashboard](https://github.com/opensergo/opensergo-dashboard)
 refer to [opensergo-specification](https://github.com/opensergo/opensergo-specification/tree/main/specification/en#data-plane-and-control-plane-communication-configuration) and set environment variables
 
 ```shell
-export OPENSERGO_BOOTSTRAP={"endpoint":"127.0.0.1:9090"}
+export OPENSERGO_BOOTSTRAP_CONFIG={"endpoint":"127.0.0.1:9090"}
 ```
 
 #### 3. Run example code
