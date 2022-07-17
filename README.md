@@ -61,4 +61,4 @@ go run example/server/main.go
 <img src="images/meta1.png" width="1603"  alt=""/>
 
 ### More info
-See [example](example/server/server.go)
+See [example](example/server/main.go)
