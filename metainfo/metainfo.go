@@ -22,10 +22,11 @@ import (
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/serviceinfo"
-	"github.com/kitex-contrib/opensergo/util"
 	v1 "github.com/opensergo/opensergo-go/proto/service_contract/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+
+	"github.com/kitex-contrib/opensergo/util"
 )
 
 var protocolMap = map[serviceinfo.PayloadCodec]string{
@@ -46,7 +47,7 @@ func NewDefaultMetaReporter() (*OpenSergoMetaReporter, error) {
 		return nil, err
 	}
 	if c == nil {
-		klog.Warn(util.ConfigNotFoundErr.Error())
+		klog.Warn(util.ErrConfigNotFound.Error())
 		return &OpenSergoMetaReporter{}, nil
 	}
 	klog.Infof("get config success,config=%+v", c)
@@ -56,7 +57,7 @@ func NewDefaultMetaReporter() (*OpenSergoMetaReporter, error) {
 // NewMetaReporter create a meta info reporter
 func NewMetaReporter(c *util.OpenSergoConfig) (*OpenSergoMetaReporter, error) {
 	if c == nil {
-		klog.Warn(util.ConfigNotFoundErr.Error())
+		klog.Warn(util.ErrConfigNotFound.Error())
 		return &OpenSergoMetaReporter{}, nil
 	}
 	conn, err := grpc.Dial(c.Endpoint, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -74,8 +75,8 @@ func NewMetaReporter(c *util.OpenSergoConfig) (*OpenSergoMetaReporter, error) {
 // ReportMetaInfo report meta info to opensergo
 func (o *OpenSergoMetaReporter) ReportMetaInfo(srvInfo *serviceinfo.ServiceInfo) error {
 	if !o.enable {
-		klog.Warn(util.ConfigNotFoundErr.Error())
-		return util.ConfigNotFoundErr
+		klog.Warn(util.ErrConfigNotFound.Error())
+		return util.ErrConfigNotFound
 	}
 	metaReq, err := o.openSergoMetaReq(srvInfo)
 	if err != nil {

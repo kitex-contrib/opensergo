@@ -21,7 +21,7 @@ import (
 	"os"
 )
 
-var ConfigNotFoundErr = errors.New("config not found")
+var ErrConfigNotFound = errors.New("config not found")
 
 type OpenSergoConfig struct {
 	Endpoint string `json:"endpoint"`
