@@ -62,3 +62,32 @@ go run example/server/main.go
 
 ### More info
 See [example](example/server/main.go)
+
+## sentinel adapter
+sentinel adapter for kitex
+
+### How to use?
+
+#### Server
+```go
+	bf := func(ctx context.Context, req, resp interface{}, blockErr error) error {
+		return errors.New(FakeErrorMsg)
+	}
+	srv := hello.NewServer(new(HelloImpl),
+		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "hello"}),
+		server.WithMiddleware(SentinelServerMiddleware(
+			WithBlockFallback(bf),
+		)))
+```
+#### Client
+```go
+	bf := func(ctx context.Context, req, resp interface{}, blockErr error) error {
+             return errors.New(FakeErrorMsg)
+        }
+	c, err := hello.NewClient("hello",
+		client.WithMiddleware(SentinelClientMiddleware(
+			WithBlockFallback(bf))))
+	if err != nil {
+		t.Fatal(err)
+	}
+```
