@@ -22,7 +22,7 @@ import (
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/serviceinfo"
-	v1 "github.com/opensergo/opensergo-go/proto/service_contract/v1"
+	v1 "github.com/opensergo/opensergo-go/pkg/proto/service_contract/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
